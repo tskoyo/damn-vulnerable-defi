@@ -35,6 +35,7 @@ contract SideEntranceLenderPool {
     function flashLoan(uint256 amount) external {
         uint256 balanceBefore = address(this).balance;
 
+        // @audit - Vulnerability: An attacker can manipulate the repayment check by using the deposit() function
         IFlashLoanEtherReceiver(msg.sender).execute{value: amount}();
 
         if (address(this).balance < balanceBefore) {
